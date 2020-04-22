@@ -9,14 +9,13 @@
         <h1>My Wishes</h1>
         <p>List of all the wishes...</p>
         
-        <% if(wishes.length > 0) { 
-            let nr = 0;%>
+        <% if(wishes.length > 0) { %>
         <div class="grid">
             <% for(let wish of wishes) { %>
             <article class="card wish-item">
                 <form class="wish-form" action="/remove-wish" method="POST">
                     <header class="card__header">
-                        <h1 class="wish__title"><%= wish.title %></h1>
+                        <h1 class="wish__title"><%= wish.name %></h1>
                     </header>
                     <div class="card__image">
                         <img src="https://englishsecrets.files.wordpress.com/2015/05/i-wish-7081.jpg" alt="A Wish">
@@ -25,14 +24,14 @@
                         <h2 class="wish__price">$19.99</h2>
                         <p class="wish__description">A very interesting book about so many even more interesting things!</p>
                     </div>-->
-                    <input id="index" name="index" value="<%= nr %>" hidden></input>
+                    <input id="index" name="index" value="<%= wish.id %>" hidden></input>
                     <div class="card__actions">
                         <button class="btn">Wish is Granted</button>
                     </div>
                 </form>
             </article>
 
-            <% nr++; } %>
+            <%} %>
         </div> 
         <% } else { %>
             <h1>No Wishes Found</h1>
