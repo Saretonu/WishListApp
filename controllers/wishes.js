@@ -1,5 +1,5 @@
-//const wishes = [];
-const Wish = require('../models/wish');
+const mongoose = require('mongoose');
+const Wish = mongoose.model('Wish');
 
 exports.getAddWishPage = 
     (req, res) => {
@@ -11,28 +11,39 @@ exports.getAddWishPage =
 
 exports.postAddWishes = (req, res) => {
     console.log(req.body.title);
-    //wishes.push({title: req.body.title});
-    const wish = new Wish(req.body.title);
-    wish.saveWish();
-    res.redirect('/');
+    let newWish = new Wish();
+    newWish.name = req.body.title
+    newWish.save((error, response) => {
+        if(!error){
+            res.redirect('/');
+        } else {
+            console.log(error);            
+        }
+    });
 }
 
 exports.getWishes = (req, res) => {
-    
-    Wish.fetchAllWishes((wishes)=>{
-        res.render('wishlist', {
-        pageTitle: 'Welcome to My Wishlist!',
-        wishes: wishes,
-        path: '/'
-        });
-    })
-    
-   // res.sendFile(path.join(rootDirectory, 'views', 'wishlist.html'));
+    Wish.find((error, wishes) => {
+        if(!error){
+            res.render('wishlist', {
+                pageTitle: 'Welcome to My Wishlist!',
+                wishes: wishes,
+                path: '/'
+            });
+        } else {
+            console.log("Failed to retrieve the data");
+        }
+    });
 }
 
 exports.removeWish = (req, res) => {
-    const wish = new Wish();
-    wish.deleteWish(req.body.index);
-    res.redirect('/');
+    console.log(req.body.index);
+    const checkedItemId = req.body.index;
+    Wish.findByIdAndRemove(checkedItemId, function(error) {
+        if(!error){
+            console.log("Successfully deleted the wish!");
+            res.redirect('/');
+        }
+    });
    // res.sendFile(path.join(rootDirectory, 'views', 'wishlist.html'));
 }
